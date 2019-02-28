@@ -20,7 +20,7 @@ const RootStack = createStackNavigator({
     },
 },
 {
-    initialRouteName: 'EmployeeData',
+    initialRouteName: 'Login',
   });
 
 const App = createAppContainer(RootStack);
