@@ -9,7 +9,7 @@ import {
   FlatList,
   Text,
   TouchableOpacity,
-  ActivityIndicator
+  Button, AsyncStorage
 } from "react-native";
 
 // Styles
@@ -49,19 +49,20 @@ export default class EmployeeData extends Component {
               
             };
             self.state.MyEmployees.push(userData)
-            console.log(self.state.MyEmployees)
+            //console.log(self.state.MyEmployees)
               this.setState({
                 dataSource:self.setState.MyEmployees
               });
-              console.log(this.state.dataSource)
+              //console.log(this.state.dataSource)
           }
         }
   }
+  
   render() {
     RNAppShortcuts.addShortcut({
       id: '2',
       shortLabel: 'Employees',
-      longLabel: 'Open employeeDatils',
+      longLabel: 'Open employeeDetails',
       iconFolderName: 'drawable',
       iconName: 'icon'
     })
@@ -85,7 +86,7 @@ export default class EmployeeData extends Component {
           )}
           style={{flex:1, }}
         />
-        
+         
       </View>
     );
   }
