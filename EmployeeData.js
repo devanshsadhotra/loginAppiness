@@ -16,6 +16,8 @@ import {
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const employeedata = require('./Employeedata.json');
+
+import RNAppShortcuts from 'react-native-app-shortcuts';
 export default class EmployeeData extends Component {
   constructor(props) {
     var totalPages;
@@ -27,6 +29,7 @@ export default class EmployeeData extends Component {
     };
   }
   componentWillMount() {
+    
     this.MyEmployees();
   }
   MyEmployees() {
@@ -55,6 +58,13 @@ export default class EmployeeData extends Component {
         }
   }
   render() {
+    RNAppShortcuts.addShortcut({
+      id: '2',
+      shortLabel: 'Employees',
+      longLabel: 'Open employeeDatils',
+      iconFolderName: 'drawable',
+      iconName: 'icon'
+    })
     return (
       <View style={{flex:1}}>
       

@@ -16,9 +16,10 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    StyleSheet,Button, ToastAndroid
+    StyleSheet,Button, ToastAndroid, AsyncStorage
 } from 'react-native';
 const authentication=require('./authentication.json')
+import RNAppShortcuts from 'react-native-app-shortcuts';
 //import {Button} from './components/Button';
 export default class Login extends Component {
     constructor(props){
@@ -28,9 +29,46 @@ export default class Login extends Component {
             password:''
         } 
     }
+   
+        componentDidMount() {
+            const emailidget =  AsyncStorage.getItem("emailid");
+            const password =  AsyncStorage.getItem("password");
+            let userdetails = {
+              email: emailidget,
+              password: password
+            };
+            if (emailidget !== null && password !== null) {
+              // this.props.login(userdetails)
+              this.setState({username:userdetails.email,
+                             password:userdetails.password
+                            })
+                            this.goToEmployeedata()
+            } else {
+              setTimeout(() => {
+                this.props.navigation.navigate('Login')
+              }, 3000);
+            }
+            RNAppShortcuts.handleShortcut((id) => {
+              if (id === '1') {
+                // go to login page
+                this.props.navigation.navigate('Login')
+              }
+            })
+            RNAppShortcuts.handleShortcut((id) => {
+                if (id === '2') {
+                  // go to employee page
+                  const { dispatch } = this.props.navigation;
+                  dispatch({ type: 'Navigation/RESET', actions: [{ type: 'Navigate', routeName: 'EmployeeData' }], index: 0 })
+                  ToastAndroid.show(authentication.loginSucsess, ToastAndroid.SHORT);
+                }
+              })
+          }
+    
     goToEmployeedata(){
       if((this.state.username.trim()!='')){
         if((this.state.username== authentication.username) && (this.state.password == authentication.password)){
+            AsyncStorage.setItem("emailid", this.state.username);
+      AsyncStorage.setItem("password", this.state.password);
             const { dispatch } = this.props.navigation;
             dispatch({ type: 'Navigation/RESET', actions: [{ type: 'Navigate', routeName: 'EmployeeData' }], index: 0 })
             ToastAndroid.show(authentication.loginSucsess, ToastAndroid.SHORT);
@@ -45,7 +83,13 @@ export default class Login extends Component {
     }
     }
     render() {
-
+        RNAppShortcuts.addShortcut({
+            id: '1',
+            shortLabel: 'detail',
+            longLabel: 'Open detail',
+            iconFolderName: 'drawable',
+            iconName: 'icon'
+          })
         return ( 
             <View style = {
                 styles.container
